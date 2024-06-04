@@ -1,0 +1,1 @@
+data_path = "/mount/studenten-temp1/users/BibtexUI/anthology.bib"
