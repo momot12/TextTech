@@ -10,7 +10,7 @@ def read_bib(filepath):
 
     # Access the entries
     entries = bib_database.entries
-    print(entries[0])
+    print(entries)
 
     return entries
 
@@ -41,9 +41,9 @@ def connect_sql(db_entries):
 
     conn = psycopg2.connect(
         host="bergbussard",
-        database="ttws2021",
-        user="ttws2021",
-        password="acid"
+        database="bibtexui",
+        user="takamamo",    # add your username
+        password="biui"     # add your password 
     )
     
     cursor = conn.cursor()
@@ -51,7 +51,7 @@ def connect_sql(db_entries):
     # Create the table to store the BibTeX entries
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS bibtex_entries (
-        id SERIAL PRIMARY KEY,
+        id SERIAL PRIMARY KEY, 
         entry_type TEXT,
         cite_key TEXT,
         title TEXT,
@@ -88,17 +88,3 @@ if __name__ == "__main__":
     bib_db = read_bib(data_path_samples)
     connect_sql(bib_db)
     
-    
-    
-    
-    """
-        Probleme:
-        {'pages': '17473--17485', 'url': 'https://aclanthology.org/2024.lrec-main.1519', 'publisher': 'ELRA and ICCL', 'address': 'Torino, Italia', 'year': '2024', 'month': 'May', 'booktitle': 'Proceedings of the 2024 Joint International Conference on Computational Linguistics, Language Resources and Evaluation (LREC-COLING 2024)', 'editor': 'Calzolari, Nicoletta  and\nKan, Min-Yen  and\nHoste, Veronique  and\nLenci, Alessandro  and\nSakti, Sakriani  and\nXue, Nianwen', 'author': 'Chen, Lei  and\nLi, Bobo  and\nZheng, Li  and\nWang, Haining  and\nMeng, Zixiang  and\nShi, Runfeng  and\nFei, Hao  and\nZhou, Jun  and\nLi, Fei  and\nTeng, Chong  and\nJi, Donghong', 'title': "What Factors Influence {LLM}s{'} Judgments? A Case Study on Question Answering", 'ENTRYTYPE': 'inproceedings', 'ID': 'chen-etal-2024-factors-influence'}
-        Traceback (most recent call last):
-        File "/mount/studenten-temp1/users/takamo/TextTech/readData.py", line 91, in <module>
-            connect_sql(bib_db)
-        File "/mount/studenten-temp1/users/takamo/TextTech/readData.py", line 52, in connect_sql
-            cursor.execute('''
-        psycopg2.errors.InsufficientPrivilege: FEHLER:  keine Berechtigung für Schema public
-        LINE 2:     CREATE TABLE IF NOT EXISTS bibtex_entries (
-    """
