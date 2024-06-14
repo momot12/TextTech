@@ -10,15 +10,15 @@ def read_bib(filepath):
 
     # Access the entries
     entries = bib_database.entries
-    print(entries)
+    #print(entries[1].keys())
 
     return entries
 
 
 def insert_entry(cursor, entry):
     query = sql.SQL('''
-    INSERT INTO bibtex_entries (entry_type, cite_key, title, author, year, journal, booktitle, publisher, note, abstract, keywords)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO bibtex_entries_abstracts (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     ''')
     data = (
         entry.get('ENTRYTYPE', ''),
@@ -26,15 +26,16 @@ def insert_entry(cursor, entry):
         entry.get('title', ''),
         entry.get('author', ''),
         entry.get('year', ''),
-        entry.get('journal', ''),
+        entry.get('month', ''),
+        entry.get('editor', ''),
         entry.get('booktitle', ''),
         entry.get('publisher', ''),
-        entry.get('note', ''),
+        entry.get('url', ''),
+        entry.get('address', ''),
         entry.get('abstract', ''),
-        entry.get('keywords', '')
+        entry.get('pages', '')
     )
     cursor.execute(query, data)
-
 
 
 def connect_sql(db_entries):
@@ -50,19 +51,21 @@ def connect_sql(db_entries):
 
     # Create the table to store the BibTeX entries
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS bibtex_entries (
+    CREATE TABLE IF NOT EXISTS bibtex_entries_abstracts (
         id SERIAL PRIMARY KEY, 
         entry_type TEXT,
         cite_key TEXT,
         title TEXT,
         author TEXT,
         year TEXT,
-        journal TEXT,
+        month TEXT,
+        editor TEXT,
         booktitle TEXT,
         publisher TEXT,
-        note TEXT,
+        url TEXT,
+        address TEXT,
         abstract TEXT,
-        keywords TEXT
+        pages TEXT
     )
     ''')
     conn.commit()
@@ -83,8 +86,10 @@ def connect_sql(db_entries):
 if __name__ == "__main__":
 
     data_path = "/mount/studenten-temp1/users/BibtexUI/anthology.bib"
-    data_path_samples = "/mount/studenten-temp1/users/takamo/TextTech/anthology_samples.bib"
+    data_path_samples1 = "/mount/studenten-temp1/users/takamo/TextTech/anthology_samples.bib"
+    data_path_samples = '/mount/studenten-temp1/users/takamo/TextTech/anthology+abstracts_short.bib'
     
+   
     bib_db = read_bib(data_path_samples)
     connect_sql(bib_db)
     
