@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<corpus>
+
+  <basicInfo>
+    <author>TIGER Corpus</author>
+    <title>TIGER Corpus</title>
+    <cite_key>bla </cite_key>
+  </basicInfo>
+
+  <dateInfo>
+    <year>2024</year>
+    <month>May</month>
+  </dateInfo>  
+
+  <extraInfo>
+     <url>bla</url>
+     <abstract>bla nla</abstract>
+  </extraInfo>
+
+</corpus>
