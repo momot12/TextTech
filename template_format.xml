@@ -3,19 +3,20 @@
 <corpus>
 
   <basicInfo>
-    <author>TIGER Corpus</author>
-    <title>TIGER Corpus</title>
-    <cite_key>bla </cite_key>
+    <author> Schulte im Walde, Sabine</author>
+    <title> Interesting Paper about NLP</title>
+    <cite_key> Walde_paper_NLP </cite_key>
   </basicInfo>
 
   <dateInfo>
     <year>2024</year>
-    <month>May</month>
   </dateInfo>  
 
   <extraInfo>
-     <url>bla</url>
-     <abstract>bla nla</abstract>
+     <url> www.paper_url.com </url>
+     <abstract> This is an Interesting Paper about modern aproaches for classifying text-data. </abstract>
+     <topic> classification </topic>
+     
   </extraInfo>
 
 </corpus>
