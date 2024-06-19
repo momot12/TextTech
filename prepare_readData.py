@@ -93,3 +93,14 @@ if __name__ == "__main__":
     bib_db = read_bib(data_path_samples)
     connect_sql(bib_db)
     
+
+if __name__ == "__main__":
+
+    data_path = "/mount/studenten-temp1/users/BibtexUI/anthology.bib" # on IMS server 
+    data_path_samples1 = "./Data/anthology_samples.bib" # without abstracts 
+    data_path_samples2 = './Data/anthology+abstracts_short.bib' # with abstracts
+    
+    # read data with bibtex parser
+    bib_db = read_bib(data_path_samples2)
+    # save on sql database 
+    connect_sql(bib_db)
