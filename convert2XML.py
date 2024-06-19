@@ -1,3 +1,5 @@
+# not used; Use collect_toXML.py instead
+
 import psycopg2
 import xml.etree.ElementTree as ET
 
