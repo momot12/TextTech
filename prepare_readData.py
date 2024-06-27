@@ -1,6 +1,19 @@
 import bibtexparser
 import psycopg2
 from psycopg2 import sql
+from pylatexenc.latex2text import LatexNodes2Text
+
+
+# replace all latex special characters, e.g. \`{o} → ò
+def replace_special_characters(all_entries):
+
+    for entry in all_entries:
+        for key in entry:
+            string_replace = entry[key]
+            replaced = LatexNodes2Text().latex_to_text(string_replace).replace("\n", " ")
+            entry[key] = replaced
+
+    return all_entries
 
 
 # function to parse bibtex data using bibtexparser
@@ -17,7 +30,9 @@ def read_bib(filepath):
     entries = bib_database.entries
     #print(entries[1].keys())
 
-    return entries
+    # replace characters
+    entries_replaced = replace_special_characters(entries)
+    return entries_replaced
 
 
 def insert_entry(cursor, entry):
@@ -107,4 +122,6 @@ if __name__ == "__main__":
     # read data with bibtex parser
     bib_db = read_bib(data_path_samples2)
     # save on sql database 
-    connect_sql(bib_db)
+    #connect_sql(bib_db)
+
+    print(bib_db)
