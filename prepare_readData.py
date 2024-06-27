@@ -3,7 +3,12 @@ import psycopg2
 from psycopg2 import sql
 
 
+# function to parse bibtex data using bibtexparser
 def read_bib(filepath):
+    """
+        filepath (str): path to raw bibtex data
+        returns entries: list of dictionaries with bibtex information
+    """
     # Read the BibTeX file
     with open(filepath, 'r') as bibtex_file:
         bib_database = bibtexparser.load(bibtex_file)
@@ -16,6 +21,10 @@ def read_bib(filepath):
 
 
 def insert_entry(cursor, entry):
+    """
+        cursor: accesses the database
+        entry (dict): entry from entries to be inserted to posgreSQL database
+    """
     query = sql.SQL('''
     INSERT INTO bibtex_entries_abstracts (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -35,10 +44,18 @@ def insert_entry(cursor, entry):
         entry.get('abstract', ''),
         entry.get('pages', '')
     )
+
+    # add data to database
     cursor.execute(query, data)
 
 
 def connect_sql(db_entries):
+    """
+        db_entries (list[dict]): data to be inserted to database
+
+        this function initialises the sql-database
+
+    """
 
     conn = psycopg2.connect(
         host="bergbussard",
@@ -80,19 +97,6 @@ def connect_sql(db_entries):
     conn.close()
 
 
-
-
-
-if __name__ == "__main__":
-
-    data_path = "/mount/studenten-temp1/users/BibtexUI/anthology.bib"
-    data_path_samples1 = "/mount/studenten-temp1/users/takamo/TextTech/anthology_samples.bib"
-    data_path_samples = '/mount/studenten-temp1/users/takamo/TextTech/anthology+abstracts_short.bib'
-    
-   
-    bib_db = read_bib(data_path_samples)
-    connect_sql(bib_db)
-    
 
 if __name__ == "__main__":
 
