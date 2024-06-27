@@ -29,14 +29,19 @@ def read_bib(filepath):
 
     # Access the entries
     entries = bib_database.entries
-    #print(entries[1].keys())
-    with open("./Data/out_file.pkl", "wb") as f:
-        pickle.dump(entries, f)
-
-
+    
     # replace characters
     entries_replaced = replace_special_characters(entries)
-    return entries_replaced
+
+    # add topics
+    res_dict, entries_topics = process_data(entries_replaced)
+
+
+    with open("./Data/bib_abstract_topics.pkl", "wb") as f:
+        pickle.dump(entries_topics, f)
+
+    return entries_topics
+
 
 def process_data(entries):
 
@@ -189,20 +194,20 @@ def connect_sql(db_entries):
 
 if __name__ == "__main__":
 
-    data_path = "/mount/studenten-temp1/users/BibtexUI/anthology.bib" # on IMS server 
+    data_path = "/mount/studenten-temp1/users/BibtexUI/anthology+abstracts.bib" # on IMS server 
     data_path_samples1 = "./Data/anthology_samples.bib" # without abstracts 
     data_path_samples2 = './Data/anthology+abstracts_short.bib' # with abstracts
     final_data_path = './Data/anthology+abstracts.bib'
     
     # read data with bibtex parser
-    bib_db = read_bib(final_path_data)
+    bib_db = read_bib(data_path)
 
-    with open("./Data/out_file.pkl", "rb") as f:
+    #print(bib_db)
+
+    with open("./Data/bib_abstract_topics.pkl", "rb") as f:
         data = pickle.load(f)
 
-    res, processed_data = process_data(data)
+    print(data)
     
     # save on sql database 
     #connect_sql(bib_db)
-
-    print(bib_db)
