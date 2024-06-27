@@ -25,7 +25,7 @@ def xml_tree(all_citations, columns, out_filename):
                 col_elem = ET.SubElement(basicInfo, col_name)
             elif col_name in ["year", "month"]:
                 col_elem = ET.SubElement(dateInfo, col_name)
-            elif col_name in ["url", "abstract"]:
+            elif col_name in ["url", "abstract", "topic"]:
                 col_elem = ET.SubElement(extraInfo, col_name)
             else:
                 continue
@@ -53,11 +53,11 @@ def convert2XML(out_filename):
     cursor = conn.cursor()
     
     # Fetch all the necessary columns
-    cursor.execute("""SELECT cite_key, title, author, year, month, url, abstract FROM bibtex_entries_abstracts""")
+    cursor.execute("""SELECT cite_key, title, author, year, month, url, abstract, topic FROM bibtex_entries_abstracts""")
     all_citations = cursor.fetchall()
 
     # Define the column names in the order they are fetched
-    columns = ["cite_key", "title", "author", "year", "month", "url", "abstract"]
+    columns = ["cite_key", "title", "author", "year", "month", "url", "abstract", "topic"]
     
     # Draw XML tree
     xml_tree(all_citations, columns, out_filename)
