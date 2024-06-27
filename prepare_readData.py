@@ -1,6 +1,7 @@
 import bibtexparser
 import psycopg2
 from psycopg2 import sql
+import pickle
 
 
 # function to parse bibtex data using bibtexparser
@@ -16,8 +17,79 @@ def read_bib(filepath):
     # Access the entries
     entries = bib_database.entries
     #print(entries[1].keys())
+    with open("./Data/out_file.pkl", "wb") as f:
+        pickle.dump(entries, f)
+
 
     return entries
+
+def process_data(entries):
+
+    language_model = 0
+    classification = 0
+    corpora = 0
+    evaluation = 0
+    language_specific = 0
+    catch_all = 0
+
+    for ent in entries:
+        title = ent.get('title', '').lower()
+        abst = ent.get('abstract', '').lower()
+
+
+        content = title+ " " +abst
+
+        cont = content.split()
+
+        lm = ["language model", "bert"]
+        cla = ["classification"]
+        corp = ["corpora", "data set", "dataset"]
+        ev = ["evaluation"]
+        lang = [ "ukrainian", "german", "indian", "hindi", "spanish", "portugese", "greek", "chinese"]
+
+        found_one = False
+
+        for word in cont:
+            if not found_one:
+                if word in lm:
+                    topic = "language model"
+                    language_model += 1
+                    found_one = True
+                elif word in cla:
+                    topic = "classification"
+                    classification += 1
+                    found_one = True
+                elif word in corp:
+                    topic = "corpora"
+                    corpora  += 1
+                    found_one = True
+                elif word in ev:
+                    topic = "evaluation"
+                    evaluation += 1
+                    found_one = True
+                elif word in lang:
+                    topic = "language specific"
+                    language_specific += 1
+                    found_one = True
+
+
+        if not found_one:
+            topic = "catch_all"
+            catch_all += 1
+        # ent.update({"title": ,"abstract": , "topic": topic})
+        ent.update({"topic": topic})
+
+    res_dict = {
+            "language_model": language_model,
+            "classification": classification,
+            "corpora": corpora,
+            "evaluation": evaluation,
+            "language_specific": language_specific,
+            "catch_all": catch_all
+            }
+
+    return res_dict, entries
+
 
 
 def insert_entry(cursor, entry):
@@ -26,8 +98,8 @@ def insert_entry(cursor, entry):
         entry (dict): entry from entries to be inserted to posgreSQL database
     """
     query = sql.SQL('''
-    INSERT INTO bibtex_entries_abstracts (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO bibtex_entries_abstracts (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages, topic)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     ''')
     data = (
         entry.get('ENTRYTYPE', ''),
@@ -42,7 +114,8 @@ def insert_entry(cursor, entry):
         entry.get('url', ''),
         entry.get('address', ''),
         entry.get('abstract', ''),
-        entry.get('pages', '')
+        entry.get('pages', ''),
+        entry.get('topic')
     )
 
     # add data to database
@@ -82,7 +155,8 @@ def connect_sql(db_entries):
         url TEXT,
         address TEXT,
         abstract TEXT,
-        pages TEXT
+        pages TEXT,
+        topic TEXT
     )
     ''')
     conn.commit()
@@ -103,8 +177,15 @@ if __name__ == "__main__":
     data_path = "/mount/studenten-temp1/users/BibtexUI/anthology.bib" # on IMS server 
     data_path_samples1 = "./Data/anthology_samples.bib" # without abstracts 
     data_path_samples2 = './Data/anthology+abstracts_short.bib' # with abstracts
+    final_data_path = './Data/anthology+abstracts.bib'
     
     # read data with bibtex parser
-    bib_db = read_bib(data_path_samples2)
+    bib_db = read_bib(final_path_data)
+
+    with open("./Data/out_file.pkl", "rb") as f:
+        data = pickle.load(f)
+
+    res, processed_data = process_data(data)
     # save on sql database 
-    connect_sql(bib_db)
+
+    connect_sql(processed_data)
