@@ -3,20 +3,24 @@
 <head>
    <title>Bibliography of ACL papers</title>
    <style>
-      body {background-color: #F5FFFA;} 
-      .h0{font-family: Impact, Helvetica, sans-serif;
-         color: #800080;
+      body {background-color: #FFFFFA;} 
+      .h0{font-family: Geneva;
+         color: #800000;
          font-size: 40px;
          letter-spacing: 5px;
          text-align: center;
          padding-top: 1px;
          } 
          .box {
-            height: 20px;
+            display: inline-block;
             width: 20px;
-            margin-bottom: 15px;
-            border: 1px solid black;
-         }
+            height: 20px;
+            margin-right: 5px; /* Space between box and text */
+            margin-left: 20px; /* Space between different pairs */
+        }
+        .faketab {
+            margin-right: 15px; /* Larger space between pairs */
+        }
       h1 {font-family: Courier, Helvetica, sans-serif; color: #527541; padding-top: 25px;}
       p, figcaption {font-family: Helvetica, sans-serif; line-height: 1.7; text-align: justify; } 
       li {font-family: Helvetica, sans-serif; line-height: 1.7; padding-left: 8px;}
@@ -30,6 +34,12 @@
             padding: 8px;
             text-align: left;
         }
+      a:link {
+            color: #1d1d51; /* Normal unvisited link */
+      }
+      a:visited {
+            color: #1d1d51; /* Normal unvisited link */
+        }
    </style>
 </head>
 <body>
@@ -38,10 +48,9 @@
   </header>
   
 
-   <p>This website provides an overview of all papers of the Association for Computational Linguistics …...</p>
-   <h3>Choose by decade bin:</h3>
-         
-   <ul style="list-style-image: linear-gradient(to left bottom, #097969, #527541);">
+   <p>This website provides an overview of all papers of the Association for Computational Linguistics. The papers are sorted into decade bins and highlighted by topic.</p>
+   <h3>Choose by decade bin:</h3>   
+   <ul style="list-style-type: circle;">
          <li style="font-family: Courier, Helvetica, sans-serif"> <a href="#1"> 2011 - Current</a></li>
          <li style="font-family: Courier, Helvetica, sans-serif"> <a href="#2"> 2001 - 2010</a></li>
          <li style="font-family: Courier, Helvetica, sans-serif"> <a href="#3"> 1991 - 2000</a></li>
@@ -50,7 +59,15 @@
    </ul>
       <hr width="100%" style="border-color: #097969" align="left" size="2">
 
-   <div class="box"></div>
+      <p>
+         Color Codes: 
+         <span class="faketab"><span class="box" style="background-color: rgb(237, 153, 227);"></span>Language Model</span>  
+         <span class="faketab"></span><span class="box" style="background-color: rgb(133, 139, 217);"></span>Classification</span>
+         <span class="faketab"></span><span class="box" style="background-color: rgb(245, 153, 153);"></span>Corpora</span>
+         <span class="faketab"></span><span class="box" style="background-color: rgb(159, 222, 157);"></span>Evaluation</span>
+         <span class="faketab"></span><span class="box" style="background-color: rgb(246, 217, 143);"></span>Language-specific</span>    
+         <span class="faketab"></span><span class="box" style="background-color: rgb(125, 216, 213);"></span>Other</span>
+      </p>    
 
    <h1 id="1"> 2011 - Current</h1>
       <table>
