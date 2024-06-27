@@ -1,7 +1,20 @@
 import bibtexparser
 import psycopg2
 from psycopg2 import sql
+from pylatexenc.latex2text import LatexNodes2Text
 import pickle
+
+
+# replace all latex special characters, e.g. \`{o} → ò
+def replace_special_characters(all_entries):
+
+    for entry in all_entries:
+        for key in entry:
+            string_replace = entry[key]
+            replaced = LatexNodes2Text().latex_to_text(string_replace).replace("\n", " ")
+            entry[key] = replaced
+
+    return all_entries
 
 
 # function to parse bibtex data using bibtexparser
@@ -21,7 +34,9 @@ def read_bib(filepath):
         pickle.dump(entries, f)
 
 
-    return entries
+    # replace characters
+    entries_replaced = replace_special_characters(entries)
+    return entries_replaced
 
 def process_data(entries):
 
@@ -186,6 +201,8 @@ if __name__ == "__main__":
         data = pickle.load(f)
 
     res, processed_data = process_data(data)
+    
     # save on sql database 
+    #connect_sql(bib_db)
 
-    connect_sql(processed_data)
+    print(bib_db)
