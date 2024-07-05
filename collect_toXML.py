@@ -53,7 +53,7 @@ def convert2XML(out_filename):
     cursor = conn.cursor()
     
     # Fetch all the necessary columns
-    cursor.execute("""SELECT cite_key, title, author, year, month, url, abstract, topic FROM bibtex_entries_abstracts""")
+    cursor.execute("""SELECT cite_key, title, author, year, month, url, abstract, topic FROM bibtex_entries_plsfinal""")
     all_citations = cursor.fetchall()
 
     # Define the column names in the order they are fetched
@@ -83,10 +83,12 @@ def beautify_xml(xml_filename, out_xml_filename):
     
 
 if __name__ == "__main__":
-    out_name = "output_TEST2.xml"
-    out_name_beautify = "out_file.xml"
+    out_name = "output_all.xml"
+    out_name_beautify = "out_all_formatted.xml"
     
     # convert to XML format
-    convert2XML(out_name)
+    convert2XML('./XML_outfiles/'+out_name)
     # format XML file 
-    beautify_xml('./Data/'+ out_name, out_name_beautify)
+
+    beautify_xml('./XML_outfiles/'+ out_name, './XML_outfiles/'+out_name_beautify)
+
