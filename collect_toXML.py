@@ -4,6 +4,11 @@ import xml.dom.minidom
 
 
 def xml_tree(all_citations, columns, out_filename):
+    """
+        all_citations (list[Tuples(str)]: information from queries for all entries
+        columns (list[str]): column names of database 
+        out_filename (str): name of output file in xml-format
+    """
     # Add root element
     corpus = ET.Element("corpus")
     
@@ -32,6 +37,11 @@ def xml_tree(all_citations, columns, out_filename):
 
 
 def convert2XML(out_filename):
+    """
+        out_filename (str): name of output file (in xml format)
+
+        converts the data from database to a given xml-format
+    """
     # Connect to the database to fetch information
     conn = psycopg2.connect(
         host="bergbussard",
@@ -59,6 +69,12 @@ def convert2XML(out_filename):
     
 
 def beautify_xml(xml_filename, out_xml_filename):
+    """
+        xml_filename (str): xml file to be formated
+        out_xml_filename (str): name of the outputfile
+
+        formats a given xml file to make it more readable.
+    """
     dom = xml.dom.minidom.parse(xml_filename) # or xml.dom.minidom.parseString(xml_string)
     pretty_xml_as_string = dom.toprettyxml()
     with open(out_xml_filename, 'w') as out:
@@ -73,4 +89,6 @@ if __name__ == "__main__":
     # convert to XML format
     convert2XML('./XML_outfiles/'+out_name)
     # format XML file 
+
     beautify_xml('./XML_outfiles/'+ out_name, './XML_outfiles/'+out_name_beautify)
+
