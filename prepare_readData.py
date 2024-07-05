@@ -118,7 +118,7 @@ def insert_entry(cursor, entry):
         entry (dict): entry from entries to be inserted to posgreSQL database
     """
     query = sql.SQL('''
-    INSERT INTO bibtex_entries_abstracts (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages, topic)
+    INSERT INTO bibtex_entries_plsFinal (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages, topic)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     ''')
     data = (
@@ -161,7 +161,7 @@ def connect_sql(db_entries):
 
     # Create the table to store the BibTeX entries
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS bibtex_entries_abstracts (
+    CREATE TABLE IF NOT EXISTS bibtex_entries_plsFinal (
         id SERIAL PRIMARY KEY, 
         entry_type TEXT,
         cite_key TEXT,
@@ -198,16 +198,13 @@ if __name__ == "__main__":
     data_path_samples1 = "./Data/anthology_samples.bib" # without abstracts 
     data_path_samples2 = './Data/anthology+abstracts_short.bib' # with abstracts
     final_data_path = './Data/anthology+abstracts.bib'
+    pkl_filepath = '/mount/studenten-temp1/users/BibtexUI/bib_abstract_topics.pkl'
     
     # read data with bibtex parser
-    bib_db = read_bib(data_path)
+    #bib_db = read_bib(data_path)
 
-    #print(bib_db)
-
-    with open("./Data/bib_abstract_topics.pkl", "rb") as f:
+    with open(pkl_filepath, "rb") as f:
         data = pickle.load(f)
-
-    print(data)
     
     # save on sql database 
-    #connect_sql(bib_db)
+        connect_sql(data)
