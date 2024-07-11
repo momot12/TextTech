@@ -118,7 +118,7 @@ def insert_entry(cursor, entry):
         entry (dict): entry from entries to be inserted to posgreSQL database
     """
     query = sql.SQL('''
-    INSERT INTO bibtex_entries_plsFinal (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages, topic)
+    INSERT INTO bibtex_cleaned_final (entry_type, cite_key, title, author, year, month, editor, booktitle, publisher, url, address, abstract, pages, topic)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     ''')
     data = (
@@ -161,7 +161,7 @@ def connect_sql(db_entries):
 
     # Create the table to store the BibTeX entries
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS bibtex_entries_plsFinal (
+    CREATE TABLE IF NOT EXISTS bibtex_cleaned_final (
         id SERIAL PRIMARY KEY, 
         entry_type TEXT,
         cite_key TEXT,
@@ -184,6 +184,14 @@ def connect_sql(db_entries):
     # Insert all entries
     for entry in db_entries:
         insert_entry(cursor, entry)
+
+    conn.commit()
+
+    # Construct the SQL DELETE query
+    cursor.execute('''
+        DELETE FROM bibtex_cleaned_final
+        WHERE author = '';
+        ''')
 
     # Commit the changes and close the connection
     conn.commit()
