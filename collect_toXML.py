@@ -83,8 +83,8 @@ def beautify_xml(xml_filename, out_xml_filename):
     
 
 if __name__ == "__main__":
-    out_name = "output_all_cleaned2.xml"
-    out_name_beautify = "out_all_formatted_cleaned2.xml"
+    out_name = "output_all.xml"
+    out_name_beautify = "out_all_formatted.xml"
     
     # convert to XML format
     convert2XML('./XML_outfiles/'+out_name)
