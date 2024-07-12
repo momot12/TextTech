@@ -10,7 +10,7 @@ This folder contains two smaller samples of the original data, one including and
 |:-----|:-----|:-----|
 |collect|[prepare_readData.py](prepare_readData.py)|Read bibtex file, convert to SQL.| 
 |prepare|[collect_toXML.py](collect_toXML.py)| Convert SQL to XML.|  
-|access|[final_webpage](final_webpage)| Directory including xsl and html files. (According xml file: [XML_outfiles/out_all_formatted.xml](XML_outfiles/out_all_formatted.xml))|
+|access|[final_webpage](final_webpage)| Directory including xsl and html files. <br> (According xml file: [XML_outfiles/out_all_formatted.xml](XML_outfiles/out_all_formatted.xml)) <br>  After having created the xml file, use the program xsltproc to create the html file: "xsltproc final_webpage.xsl out_all_formatted.xml > final_webpage.html"|
 
 #### [XML_outfiles](XML_outfiles)  
 This folder contains all (test-) xml files. All files are created in [collect_toXML.py](collect_toXML.py).  
